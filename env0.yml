@@ -4,12 +4,10 @@ deploy:
   steps:
     terraformApply:
       after:
-        - whoami
-        - ls -lah
-        - terraform output -raw private_key > myKey.pem
-        - chmod 400 myKey.pem
+        - terraform output -raw private_key > /tmp/myKey.pem
+        - sudo chmod 400 /tmp/myKey.pem
         - sed -i "s/<placeholder_app>/$(terraform output -raw public_ip)/g" Ansible/inventory
-        - apk update
-        - apk install ansible
+        - sudo apk update
+        - sudo apk install ansible
         - cd Ansible
-        - ansible-playbook --private-key ../myKey.pem -i inventory jenkinsPlaybook.yaml
+        - ansible-playbook --private-key /tmp/myKey.pem -i inventory jenkinsPlaybook.yaml
