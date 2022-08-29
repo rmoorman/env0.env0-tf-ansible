@@ -8,7 +8,5 @@ deploy:
         - chmod 400 /tmp/myKey.pem
         - sed -i "s/<placeholder_app>/$(terraform output -raw public_ip)/g" Ansible/inventory
         - pip3 install --user ansible
-        - export PATH=$PATH:$(python3 -m site --user-base)/bin
-        - cd Ansible
         - ls -lah
         - ansible-playbook --private-key /tmp/myKey.pem -i inventory jenkinsPlaybook.yaml
